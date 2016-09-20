@@ -12,7 +12,6 @@ int health = 5;
 /* const int target_leds[3] = {4,5,6}; */
 
 void setup_connection(){
-  pinMode(5,OUTPUT);
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, pw);
@@ -33,11 +32,13 @@ void blink(int pin){
   }
 }
 
-
-void init_game(){
+void init_pins(){
   pinMode(0,OUTPUT);
   pinMode(4,OUTPUT);
   pinMode(5,OUTPUT);
+}
+
+void init_game(){
   digitalWrite(0, HIGH);
   digitalWrite(4, HIGH);
   digitalWrite(5, HIGH);
@@ -52,6 +53,7 @@ void lower_hp(){
 }
 
 void setup() {
+  init_pins();
   setup_connection();
   init_game();
 }
