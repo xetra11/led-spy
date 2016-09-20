@@ -1,2 +1,6 @@
-/build-*
-.#*
+/WiFiClient/build-*
+/WiFiServer/build-*
+/WiFiClient/.#*
+/WiFiServer/.#*
+/node_modules/*
+/package.json
