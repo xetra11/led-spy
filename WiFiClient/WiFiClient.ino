@@ -52,6 +52,19 @@ void lower_hp(){
   health--;
 }
 
+WiFiClient* connect_to_host(){
+  WiFiClient* client = (WiFiClient*) malloc(sizeof(WiFiClient));    
+  Serial.println("Connecting to host");
+  if(!client->connect(host, port)){
+    Serial.println("...connection failed!");
+    Serial.println("Retrying in 5 seconds...");
+    WiFi.printDiag(Serial);
+    delay(5000);
+    return NULL;  
+  }
+  return client;
+}
+
 void setup() {
   init_pins();
   setup_connection();
