@@ -93,25 +93,21 @@ void setup() {
   setup_connection();
   init_game();
 }
-
+ 
 void loop() {
-  WiFiClient client;
-  Serial.println("Connecting to host");
-  if(!client.connect(host, port)){
-    Serial.println("...connection failed!");
-    Serial.println("Retrying in 5 seconds...");
-    WiFi.printDiag(Serial);
-    delay(5000);
-    return;  
-  }
-  client.write('A');
-  Serial.println("...TCP message fired!");
-  delay(200);
-  while(client.available()){
-    if(client.read() == 'B'){
-      lower_hp();
+  WiFiClient* client = connect_to_host();
+  if(has_client(client)){
+    int pressed_button = get_pressed_button();
+    client->write('A');
+    Serial.println("...TCP message fired!");
+    delay(200);
+    while(client->available()){
+      int enemy_target_id = client->read();
+      if(did_hit(enemy_target_id)){
+        lower_hp();
+      }
     }
+    client->stop();
+    delay(2000);
   }
-  client.stop();
-  delay(2000);
 }
