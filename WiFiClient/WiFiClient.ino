@@ -8,7 +8,8 @@ const int port = 80;
 
 //Game
 const int health_leds[3] = {0,4,5};
-int health = 5;
+const int base_leds[2] = {2,3};
+int health = 3;
 /* const int target_leds[3] = {4,5,6}; */
 
 void setup_connection(){
@@ -50,6 +51,28 @@ void lower_hp(){
   }
   digitalWrite(health, LOW);
   health--;
+}
+
+bool is_dead(){
+  return health <= 0;
+}
+
+bool has_client(WiFiClient* client){
+  return client != NULL;
+}
+
+bool did_hit(int led_id){
+  if (led_id == base_leds[0]) return true;
+  if (led_id == base_leds[1]) return true;
+  return false;
+}
+
+int get_pressed_button(){
+  if(digitalRead(1) == HIGH) return 1;
+  if(digitalRead(2) == HIGH) return 2;
+  if(digitalRead(3) == HIGH) return 3;
+  if(digitalRead(4) == HIGH) return 4;
+  if(digitalRead(5) == HIGH) return 5;
 }
 
 WiFiClient* connect_to_host(){
