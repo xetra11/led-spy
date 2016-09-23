@@ -78,6 +78,10 @@ bool is_dead(){
   return health <= 0;
 }
 
+void player_loose(){
+  Serial.println("-> player dead");
+}
+
 bool has_client(WiFiClient* client){
   return client != NULL;
 }
