@@ -1,5 +1,12 @@
 #include <ESP8266WiFi.h>
 
+#define RST_BTN 6
+#define H1 0
+#define H2 4
+#define H3 5
+#define B1 2
+#define B2 3
+
 // Connection
 const char* ssid = "artex11";
 const char* pw = "getmenow11";
