@@ -113,6 +113,28 @@ WiFiClient* connect_to_host(){
   return client;
 }
 
+void game_loop(){
+  WiFiClient* client = connect_to_host();
+  if(has_client(client)){
+    int pressed_button = get_pressed_button();
+    client->write(pressed_button);
+    Serial.println("...TCP message fired!");
+    delay(200);
+    while(client->available()){
+      int enemy_target_id = client->read();
+      if(did_hit(enemy_target_id)){
+        lower_hp();
+        if(is_dead()){
+          player_loose();
+        }
+      }
+    }
+    client->stop();
+    // check if restart has been pressed and reset game
+    poll_restart_button();
+  }
+}
+
 void setup() {
   init_pins();
   setup_connection();
@@ -120,19 +142,7 @@ void setup() {
 }
  
 void loop() {
-  WiFiClient* client = connect_to_host();
-  if(has_client(client)){
-    int pressed_button = get_pressed_button();
-    client->write('A');
-    Serial.println("...TCP message fired!");
-    delay(200);
-    while(client->available()){
-      int enemy_target_id = client->read();
-      if(did_hit(enemy_target_id)){
-        lower_hp();
-      }
-    }
-    client->stop();
-    delay(2000);
+  if(is_connected()){
+    game_loop();
   }
 }
