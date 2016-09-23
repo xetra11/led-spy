@@ -154,5 +154,8 @@ void setup() {
 void loop() {
   if(is_connected()){
     game_loop();
+  }else{
+    setup_connection();
   }
+
 }
