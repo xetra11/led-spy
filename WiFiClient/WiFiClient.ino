@@ -8,10 +8,13 @@
 #define B1 2
 #define B2 3
 
+#define SSID "artex11"
+#define PW "getmenow11"
+#define HOST "192.168.4.1"
+
+#define MAX_WAIT_CONNECT 5000
+
 // Connection
-const char* ssid = "artex11";
-const char* pw = "getmenow11";
-const char* host = "192.168.4.1";
 const int port = 80;
 
 //Game
@@ -22,7 +25,7 @@ int health = 3;
 void setup_connection(){
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, pw);
+  WiFi.begin(SSID, PW);
   Serial.println("Connecting to AP");
   while(WiFi.status() != WL_CONNECTED){
     Serial.print(".");
@@ -109,11 +112,10 @@ int get_pressed_button(){
 WiFiClient* connect_to_host(){
   WiFiClient* client = (WiFiClient*) malloc(sizeof(WiFiClient));    
   Serial.println("Connecting to host");
-  if(!client->connect(host, port)){
+  if(!client->connect(HOST, port)){
     Serial.println("...connection failed!");
-    Serial.println("Retrying in 5 seconds...");
-    WiFi.printDiag(Serial);
-    delay(5000);
+    Serial.printf("Retrying in %d seconds...\n", MAX_WAIT_CONNECT);
+    delay(MAX_WAIT_CONNECT);
     return NULL;  
   }
   return client;
@@ -136,14 +138,14 @@ void get_enemy_action(WiFiClient* client){
   }
 }
 
-void game_loop(){
+void game_tick(){
   WiFiClient* client = connect_to_host();
   if(has_client(client)){
     player_action(client);
     while(client->available()){
       get_enemy_action(client);
     }
-    client->stop();
+    client->stop(); // disconnect client to cleanup
     // check if restart has been pressed and reset game
     poll_restart_button();
   }
@@ -157,9 +159,8 @@ void setup() {
  
 void loop() {
   if(is_connected()){
-    game_loop();
+    game_tick();
   }else{
     setup_connection();
   }
-
 }
