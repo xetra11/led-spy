@@ -14,10 +14,9 @@ const char* host = "192.168.4.1";
 const int port = 80;
 
 //Game
-const int health_leds[3] = {0,4,5};
-const int base_leds[2] = {2,3};
+const int health_leds[3] = {H1,H2,H3};
+const int base_leds[2] = {B1,B2};
 int health = 3;
-/* const int target_leds[3] = {4,5,6}; */
 
 void setup_connection(){
   Serial.begin(115200);
