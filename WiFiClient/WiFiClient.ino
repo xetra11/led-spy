@@ -98,6 +98,7 @@ int get_pressed_button(){
   if(digitalRead(3) == HIGH) return 3;
   if(digitalRead(4) == HIGH) return 4;
   if(digitalRead(5) == HIGH) return 5;
+  return 0;
 }
 
 WiFiClient* connect_to_host(){
