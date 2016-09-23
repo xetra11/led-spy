@@ -51,6 +51,17 @@ void init_game(){
   digitalWrite(5, HIGH);
 }
 
+void poll_restart_button(){
+  if(digitalRead(RST_BTN == HIGH)){
+    restart_game();
+  }
+}
+
+void restart_game(){
+  init_pins();
+  init_game();
+}
+
 void lower_hp(){
   if(health < 4){
     digitalWrite(0, LOW);
