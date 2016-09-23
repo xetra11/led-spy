@@ -31,6 +31,10 @@ void setup_connection(){
   Serial.println(" connected");
 }
 
+boolean is_connected(){
+  return WiFi.status() == WL_CONNECTED;
+}
+
 void blink(int pin){
   if(digitalRead(pin) == LOW){
     digitalWrite(pin, HIGH);
