@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 
 #define RST_BTN 6
+#define LOAD 1
 #define H1 0
 #define H2 4
 #define H3 5
@@ -24,15 +25,19 @@ void setup_connection(){
   WiFi.begin(ssid, pw);
   Serial.println("Connecting to AP");
   while(WiFi.status() != WL_CONNECTED){
-    delay(500);
     Serial.print(".");
-    blink(5);
+    load_blinker(200);
   }
   Serial.println(" connected");
 }
 
 boolean is_connected(){
   return WiFi.status() == WL_CONNECTED;
+}
+
+void load_blinker(int delaytime){
+  blink(LOAD);
+  delay(delaytime);
 }
 
 void blink(int pin){
