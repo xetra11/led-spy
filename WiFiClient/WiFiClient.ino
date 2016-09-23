@@ -126,18 +126,22 @@ void player_action(WiFiClient* client){
     delay(200);
 }
 
+void get_enemy_action(WiFiClient* client){
+  int enemy_target_id = client->read();
+  if(did_hit(enemy_target_id)){
+    lower_hp();
+    if(is_dead()){
+      player_loose();
+    }
+  }
+}
+
 void game_loop(){
   WiFiClient* client = connect_to_host();
   if(has_client(client)){
     player_action(client);
     while(client->available()){
-      int enemy_target_id = client->read();
-      if(did_hit(enemy_target_id)){
-        lower_hp();
-        if(is_dead()){
-          player_loose();
-        }
-      }
+      get_enemy_action(client);
     }
     client->stop();
     // check if restart has been pressed and reset game
