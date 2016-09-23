@@ -119,13 +119,17 @@ WiFiClient* connect_to_host(){
   return client;
 }
 
-void game_loop(){
-  WiFiClient* client = connect_to_host();
-  if(has_client(client)){
+void player_action(WiFiClient* client){
     int pressed_button = get_pressed_button();
     client->write(pressed_button);
     Serial.println("...TCP message fired!");
     delay(200);
+}
+
+void game_loop(){
+  WiFiClient* client = connect_to_host();
+  if(has_client(client)){
+    player_action(client);
     while(client->available()){
       int enemy_target_id = client->read();
       if(did_hit(enemy_target_id)){
